@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width= , initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Game</title>
+</head>
+
+<body>
+    <h1 align="center">CUBE MONSTERS</h1>
+    <div id="box">
+    <p style="position: relative; top:5px ; left:6px ;">Use spaceBar for Jump </p>
+
+        <div style="position: absolute; top:170px ; left: 550px;">
+            <button style="display: none;"></button>
+        </div>
+
+       <div id="dino"></div>
+       <div id="block"></div>
+       <div id="block_2"></div>
+       <audio src="./asset/jump-sound.wav"></audio>
+
+    </div>
+</body>
+
+<script>
+
+    const box = document.querySelector('#box')
+    const dino = document.querySelector('#dino')
+    const block = document.querySelector('#block')
+    const block_2 = document.querySelector('#block_2')
+    const h1 = document.querySelector('h1');
+    const span=document.querySelector('span')
+    const plyer_sound = document.querySelector('audio')
+    const btn = document.querySelector('button');
+
+    // Game start (spaceBar event)
+    window.addEventListener('keypress', e => {
+        if (e.keyCode === 32) {
+            h1.innerText = "CUBE MONSTERS";
+            btn.style.display='none';
+            block.style.animation = ' move 2.5s infinite'
+            block_2.style.animation = ' move2 6.5s infinite'
+            plyer_sound.play()
+            dino.classList.add("animate");
+            dino.setAttribute('style', 'background-image:url(./asset/kangro_jump.png);');
+            setTimeout(function () {
+                dino.classList.remove("animate");
+                dino.setAttribute('style', 'background-image: url(./asset/kangro.png);')
+
+            }, 500);
+        }
+    })
+
+    // If cube N player collides
+    let lose = setInterval(function () {
+        let dinoTop =
+            parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
+        let blockLeft =
+            parseInt(window.getComputedStyle(block).getPropertyValue("left"));
+        let blockLeft_2 =
+            parseInt(window.getComputedStyle(block_2).getPropertyValue("left"));
+    
+        if (blockLeft < 0 && blockLeft > -50 && dinoTop >= 207  && dino.getAttribute('style', 'background-image:url(./asset/kangro_jump.png);')) {
+            window.alert('You lose..')
+            block.style.animation = "jump_2 1s infinite";
+            block_2.style.animation = "jump_2 3s infinite";
+            h1.innerText = 'GAME OVER..';
+            btn.style.display = 'inline-block';
+            btn.innerText = 'Play again'
+        }
+        // if (blockLeft < 10 && blockLeft > -50 && dinoTop >= 223 && dino.getAttribute('style', 'background-image: url(./asset/kangro.png);')) {
+        //     window.alert('You Lose..')
+        //     block.style.animation = "jump_2 1s infinite";
+        //     block_2.style.animation = "jump_2 3s infinite";
+        //     h1.innerText = 'GAME OVER..';
+        //     btn.style.display = 'inline-block';
+        //     btn.innerText = 'Play again'
+        // }
+        else if (blockLeft_2 < -60 && blockLeft_2 > -100 && dinoTop >= 205 && dino.getAttribute('style', 'background-image:url(./asset/kangro_jump.png);')) {
+            window.alert('You Lose..')
+            block_2.style.animation = "jump_2 1s infinite";
+            block.style.animation = "jump_2 3s infinite";
+            h1.innerText = 'GAME OVER..';
+            btn.style.display = 'inline-block';
+            btn.innerText = 'Play again'
+        }
+        else if (blockLeft_2 < -30 && blockLeft_2 > -100 && dinoTop >= 220 && dino.getAttribute('style', 'background-image: url(./asset/kangro.png);')) {
+            window.alert('You Lose..')
+            block_2.style.animation = "jump_2 1s infinite";
+            block.style.animation = "jump_2 3s infinite";
+            h1.innerText = 'GAME OVER..';
+            btn.style.display = 'inline-block';
+            btn.innerText = 'Play again'
+        }
+    }, 10)
+
+    // Play again button
+    btn.addEventListener('click', e => {
+        location.reload(lose)
+    })
+</script>
+
+</html>

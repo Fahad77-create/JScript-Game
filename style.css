@@ -1,0 +1,112 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+h1{
+    margin-top: 50px;
+    font-family: cursive;
+    font-size: 45px;
+    background-color:black;
+    color:goldenrod;
+}
+
+#box{
+    margin-left:16vw ;
+    margin-top: 50px;
+    background-image: url(./asset/street.jpg);
+    background-size:750px;
+    height: 355px;
+    width: 902px;
+    border: 1px solid black;
+}
+#dino{
+    background-image:url(./asset/kangro.png);
+    background-size:130px ;
+    height:105px ;
+    width:130px ;
+    display: inline-block;
+    position: relative;
+    top: 220px;
+    left:50px ;
+    z-index: 10;
+    /* animation:jump 0.5s ; */
+}
+
+.animate{
+     animation:kangro_jump 0.5s; 
+     height:100px ;
+     width:80px ;
+     position: relative;
+     top: 235px;
+     left:50px ;
+}
+#block{
+    height:50px ;
+    width: 50px;
+    display: inline-block;
+    background-image:url(./asset/monster.jpg);
+    background-size: cover;
+    border-radius:2px ;
+    position:relative;
+    top: 225px;
+    left:715px;
+    z-index: 5;
+    /* animation: move 2s infinite; */
+}
+#block_2{
+    height:49px ;
+    width: 49px;
+    display: inline-block;
+    border: 2px solid #88b8b9;
+    background-image:url(./asset/monster-4.webp);
+    background-size: cover;
+    border-radius:1px ;
+    position:relative;
+    top: 225px;
+    left:660px;
+    z-index: 5;
+    /* animation: move2 5s infinite; */
+}
+button{
+    margin-left: 50px;
+    margin-top:50px ;
+    width:130px ;
+    height:40px ;
+    font-size: 20px;
+    background-color: green;
+    border:2px solid rgb(0, 173, 0) ;
+    color: white;
+}
+button:hover{
+    border:2px solid goldenrod ;
+}
+
+/* ============KeyFrames=========== */
+@keyframes kangro_jump{
+        0%{top:220px ;}
+        50%{top:110;}
+        70%{top:125px;}
+        100%{top:220px;}
+    }
+
+/* ========for Cubes===== */
+@keyframes move{
+    0%{left:715px ;}
+    50%{left:400px ;}
+    90%{left:-135px ;}
+    100%{left:-136px;}
+}
+@keyframes move2{
+    0%{left:660px ;}
+    25%{left:500px ;}
+    50%{left:350px ;}
+    75%{left:100px ;}
+    90%{left:-185px ;}
+    100%{left:-188px;}
+}
+
+@keyframes jump_2{
+    0%{top:225px ;}
+    50%{top:130px;}
+    100%{top:225px;}
+}
