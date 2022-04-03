@@ -38,26 +38,7 @@
     const btn = document.querySelector('button');
 
     // Game start (spaceBar event)
-    let view=window.matchMedia('(max-width:800px)');
 
-    view.onchange=(e)=>{
-        if(e.matches){
-        window.addEventListener('click', e => {
-            h1.innerText = "CUBE MONSTERS";
-            btn.style.display='none';
-            block.style.animation = ' move 2.5s infinite'
-            block_2.style.animation = ' move2 6.5s infinite'
-            plyer_sound.play()
-            dino.classList.add("animate");
-            dino.setAttribute('style', 'background-image:url(./asset/kangro_jump.png);');
-            setTimeout(function () {
-                dino.classList.remove("animate");
-                dino.setAttribute('style', 'background-image: url(./asset/kangro.png);')
-
-            }, 500);
-        })
-        }
-        else{
             window.addEventListener('keypress', e => {
         if (e.keyCode === 32) {
             h1.innerText = "CUBE MONSTERS";
@@ -74,8 +55,6 @@
             }, 500);
         }
     })
-        }
-    }
 
     // If cube N player collides
     let lose = setInterval(function () {
