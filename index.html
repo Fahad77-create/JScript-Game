@@ -26,12 +26,12 @@
     </div>
 </body>
 <script>
-    const box = document.querySelector('#box')
-    const dino = document.querySelector('#dino')
-    const block = document.querySelector('#block')
-    const block_2 = document.querySelector('#block_2')
+    const box = document.querySelector('#box');
+    const dino = document.querySelector('#dino');
+    const block = document.querySelector('#block');
+    const block_2 = document.querySelector('#block_2');
     const h1 = document.querySelector('h1');
-    const plyer_sound = document.querySelector('audio')
+    const plyer_sound = document.querySelector('audio');
     const btn = document.querySelector('button');
 
     // ---- Create a score display inside the game box ----
@@ -47,14 +47,16 @@
     scoreDisplay.style.borderRadius = '8px';
     scoreDisplay.style.zIndex = '1000';
     scoreDisplay.innerText = 'Score: 0';
-    box.appendChild(scoreDisplay);  // 👈 append inside the game area
+    box.appendChild(scoreDisplay);
 
     let score = 0;
     let gameOver = false;
+    let passedBlock = false;
+    let passedBlock2 = false;
 
     // ---- Function for Jump ----
     function jump() {
-        if (gameOver) return; // Don't allow jumping after losing
+        if (gameOver) return;
 
         h1.innerText = "CUBE MONSTERS";
         btn.style.display = 'none';
@@ -69,10 +71,6 @@
                 dino.classList.remove("animate");
                 dino.style.backgroundImage = "url(./asset/kangro.png)";
             }, 500);
-
-            // Increase score on each jump
-            score++;
-            scoreDisplay.innerText = 'Score: ' + score;
         }
     }
 
@@ -86,14 +84,17 @@
         jump();
     });
 
-    // ---- Collision check ----
-    let lose = setInterval(function () {
+    // ---- Collision + Scoring Check ----
+    let gameLoop = setInterval(function () {
+        if (gameOver) return;
+
         let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
         let blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("left"));
         let blockLeft_2 = parseInt(window.getComputedStyle(block_2).getPropertyValue("left"));
 
-        if ((blockLeft < 0 && blockLeft > -50 && dinoTop >= 207) ||
-            (blockLeft_2 < -60 && blockLeft_2 > -100 && dinoTop >= 205)) {
+        // ---- Collision detection ----
+        if ((blockLeft < 50 && blockLeft > 0 && dinoTop >= 207) ||
+            (blockLeft_2 < 50 && blockLeft_2 > 0 && dinoTop >= 207)) {
 
             alert(`You Lose.. Final Score: ${score}`);
             gameOver = true;
@@ -102,7 +103,30 @@
             h1.innerText = 'GAME OVER..';
             btn.style.display = 'inline-block';
             btn.innerText = 'Play again';
+            return;
         }
+
+        // ---- Scoring when block passes ----
+        if (blockLeft < -50 && !passedBlock) {
+            score++;
+            scoreDisplay.innerText = 'Score: ' + score;
+            passedBlock = true;
+        }
+
+        if (blockLeft > 0) {
+            passedBlock = false; // reset for next pass
+        }
+
+        if (blockLeft_2 < -50 && !passedBlock2) {
+            score++;
+            scoreDisplay.innerText = 'Score: ' + score;
+            passedBlock2 = true;
+        }
+
+        if (blockLeft_2 > 0) {
+            passedBlock2 = false; // reset for next pass
+        }
+
     }, 10);
 
     // ---- Play again button ----
@@ -110,6 +134,7 @@
         location.reload();
     });
 </script>
+
 
 
 </html>
