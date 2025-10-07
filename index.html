@@ -107,8 +107,8 @@
         let blockLeft_2 = parseInt(window.getComputedStyle(block_2).getPropertyValue("left"));
 
         // Collision check
-        if ((blockLeft < 30 && blockLeft > 0 && dinoTop >= 207) ||
-            (blockLeft_2 < 30 && blockLeft_2 > 0 && dinoTop >= 207)) {
+        if ((blockLeft < 50 && blockLeft > 0 && dinoTop >= 180) ||
+            (blockLeft_2 < 50 && blockLeft_2 > 0 && dinoTop >= 180)) {
 
             clearInterval(timer); // stop timer
             gameOver = true;
