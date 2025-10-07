@@ -34,15 +34,20 @@
     const plyer_sound = document.querySelector('audio')
     const btn = document.querySelector('button');
 
-    // Create a score display
+    // ---- Create a score display inside the game box ----
     const scoreDisplay = document.createElement('div');
     scoreDisplay.style.position = 'absolute';
     scoreDisplay.style.top = '10px';
     scoreDisplay.style.right = '20px';
-    scoreDisplay.style.fontSize = '24px';
+    scoreDisplay.style.fontSize = '22px';
     scoreDisplay.style.fontWeight = 'bold';
+    scoreDisplay.style.color = 'black';
+    scoreDisplay.style.background = 'rgba(255,255,255,0.6)';
+    scoreDisplay.style.padding = '5px 10px';
+    scoreDisplay.style.borderRadius = '8px';
+    scoreDisplay.style.zIndex = '1000';
     scoreDisplay.innerText = 'Score: 0';
-    document.body.appendChild(scoreDisplay);
+    box.appendChild(scoreDisplay);  // 👈 append inside the game area
 
     let score = 0;
     let gameOver = false;
@@ -65,7 +70,7 @@
                 dino.style.backgroundImage = "url(./asset/kangro.png)";
             }, 500);
 
-            // Increase score on each successful jump
+            // Increase score on each jump
             score++;
             scoreDisplay.innerText = 'Score: ' + score;
         }
