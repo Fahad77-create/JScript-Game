@@ -34,36 +34,40 @@
     const plyer_sound = document.querySelector('audio');
     const btn = document.querySelector('button');
 
-    // ---- Create a score display inside the game box ----
-    const scoreDisplay = document.createElement('div');
-    scoreDisplay.style.position = 'absolute';
-    scoreDisplay.style.top = '10px';
-    scoreDisplay.style.right = '20px';
-    scoreDisplay.style.fontSize = '22px';
-    scoreDisplay.style.fontWeight = 'bold';
-    scoreDisplay.style.color = 'black';
-    scoreDisplay.style.background = 'rgba(255,255,255,0.6)';
-    scoreDisplay.style.padding = '5px 10px';
-    scoreDisplay.style.borderRadius = '8px';
-    scoreDisplay.style.zIndex = '1000';
-    scoreDisplay.innerText = 'Score: 0';
-    box.appendChild(scoreDisplay);
+    // ---- Create a timer display inside the game box ----
+    const timeDisplay = document.createElement('div');
+    timeDisplay.style.position = 'absolute';
+    timeDisplay.style.top = '10px';
+    timeDisplay.style.right = '20px';
+    timeDisplay.style.fontSize = '22px';
+    timeDisplay.style.fontWeight = 'bold';
+    timeDisplay.style.color = 'black';
+    timeDisplay.style.background = 'rgba(255,255,255,0.6)';
+    timeDisplay.style.padding = '5px 10px';
+    timeDisplay.style.borderRadius = '8px';
+    timeDisplay.style.zIndex = '1000';
+    timeDisplay.innerText = 'Time: 0s';
+    box.appendChild(timeDisplay);
 
-    let score = 0;
+    let time = 0;
+    let timer = null;
+    let gameStarted = false;
     let gameOver = false;
-    let passedBlock = false;
-    let passedBlock2 = false;
 
-    // ---- Function for Jump ----
-    function jump() {
+    // ---- Start Game ----
+    function startGame() {
         if (gameOver) return;
 
-        h1.innerText = "CUBE MONSTERS";
-        btn.style.display = 'none';
-        block.style.animation = 'move 2.5s infinite';
-        block_2.style.animation = 'move2 6.5s infinite';
-        plyer_sound.play();
+        // Start only once
+        if (!gameStarted) {
+            gameStarted = true;
+            block.style.animation = 'move 2.5s infinite';
+            block_2.style.animation = 'move2 6.5s infinite';
+            startTimer();
+        }
 
+        // Make the dino jump
+        plyer_sound.play();
         if (!dino.classList.contains("animate")) {
             dino.classList.add("animate");
             dino.style.backgroundImage = "url(./asset/kangro_jump.png)";
@@ -74,17 +78,27 @@
         }
     }
 
+    // ---- Timer ----
+    function startTimer() {
+        timer = setInterval(() => {
+            if (!gameOver) {
+                time++;
+                timeDisplay.innerText = 'Time: ' + time + 's';
+            }
+        }, 1000);
+    }
+
     // ---- Desktop: Spacebar ----
     window.addEventListener('keypress', e => {
-        if (e.code === "Space") jump();
+        if (e.code === "Space") startGame();
     });
 
-    // ---- Mobile: Touch screen ----
+    // ---- Mobile: Touch ----
     window.addEventListener('touchstart', () => {
-        jump();
+        startGame();
     });
 
-    // ---- Collision + Scoring Check ----
+    // ---- Collision Detection ----
     let gameLoop = setInterval(function () {
         if (gameOver) return;
 
@@ -92,44 +106,22 @@
         let blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("left"));
         let blockLeft_2 = parseInt(window.getComputedStyle(block_2).getPropertyValue("left"));
 
-        // ---- Collision detection ----
+        // Collision check
         if ((blockLeft < 50 && blockLeft > 0 && dinoTop >= 207) ||
             (blockLeft_2 < 50 && blockLeft_2 > 0 && dinoTop >= 207)) {
 
-            alert(`You Lose.. Final Score: ${score}`);
+            clearInterval(timer); // stop timer
             gameOver = true;
             block.style.animation = "none";
             block_2.style.animation = "none";
             h1.innerText = 'GAME OVER..';
             btn.style.display = 'inline-block';
             btn.innerText = 'Play again';
-            return;
+            alert(`You survived for ${time} seconds!`);
         }
-
-        // ---- Scoring when block passes ----
-        if (blockLeft < -50 && !passedBlock) {
-            score++;
-            scoreDisplay.innerText = 'Score: ' + score;
-            passedBlock = true;
-        }
-
-        if (blockLeft > 0) {
-            passedBlock = false; // reset for next pass
-        }
-
-        if (blockLeft_2 < -50 && !passedBlock2) {
-            score++;
-            scoreDisplay.innerText = 'Score: ' + score;
-            passedBlock2 = true;
-        }
-
-        if (blockLeft_2 > 0) {
-            passedBlock2 = false; // reset for next pass
-        }
-
     }, 10);
 
-    // ---- Play again button ----
+    // ---- Restart ----
     btn.addEventListener('click', () => {
         location.reload();
     });
