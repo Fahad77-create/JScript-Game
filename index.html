@@ -27,82 +27,63 @@
 </body>
 
 <script>
-
     const box = document.querySelector('#box')
     const dino = document.querySelector('#dino')
     const block = document.querySelector('#block')
     const block_2 = document.querySelector('#block_2')
     const h1 = document.querySelector('h1');
-    const span=document.querySelector('span')
     const plyer_sound = document.querySelector('audio')
     const btn = document.querySelector('button');
 
-    // Game start (spaceBar event)
+    // ---- Function for Jump ----
+    function jump() {
+        h1.innerText = "CUBE MONSTERS";
+        btn.style.display = 'none';
+        block.style.animation = 'move 2.5s infinite';
+        block_2.style.animation = 'move2 6.5s infinite';
+        plyer_sound.play();
 
-            window.addEventListener('keypress', e => {
-        if (e.keyCode === 32) {
-            h1.innerText = "CUBE MONSTERS";
-            btn.style.display='none';
-            block.style.animation = ' move 2.5s infinite'
-            block_2.style.animation = ' move2 6.5s infinite'
-            plyer_sound.play()
+        if (!dino.classList.contains("animate")) {
             dino.classList.add("animate");
-            dino.setAttribute('style', 'background-image:url(./asset/kangro_jump.png);');
-            setTimeout(function () {
+            dino.style.backgroundImage = "url(./asset/kangro_jump.png)";
+            setTimeout(() => {
                 dino.classList.remove("animate");
-                dino.setAttribute('style', 'background-image: url(./asset/kangro.png);')
-
+                dino.style.backgroundImage = "url(./asset/kangro.png)";
             }, 500);
         }
-    })
+    }
 
-    // If cube N player collides
+    // ---- Desktop: Spacebar ----
+    window.addEventListener('keypress', e => {
+        if (e.code === "Space") jump();
+    });
+
+    // ---- Mobile: Touch screen ----
+    window.addEventListener('touchstart', () => {
+        jump();
+    });
+
+    // ---- Collision check ----
     let lose = setInterval(function () {
-        let dinoTop =
-            parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
-        let blockLeft =
-            parseInt(window.getComputedStyle(block).getPropertyValue("left"));
-        let blockLeft_2 =
-            parseInt(window.getComputedStyle(block_2).getPropertyValue("left"));
-    
-        if (blockLeft < 0 && blockLeft > -50 && dinoTop >= 207  && dino.getAttribute('style', 'background-image:url(./asset/kangro_jump.png);')) {
-            window.alert('You lose..')
+        let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
+        let blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("left"));
+        let blockLeft_2 = parseInt(window.getComputedStyle(block_2).getPropertyValue("left"));
+
+        if ((blockLeft < 0 && blockLeft > -50 && dinoTop >= 207) ||
+            (blockLeft_2 < -60 && blockLeft_2 > -100 && dinoTop >= 205)) {
+            alert('You Lose..');
             block.style.animation = "jump_2 1s infinite";
             block_2.style.animation = "jump_2 3s infinite";
             h1.innerText = 'GAME OVER..';
             btn.style.display = 'inline-block';
-            btn.innerText = 'Play again'
+            btn.innerText = 'Play again';
         }
-        // if (blockLeft < 10 && blockLeft > -50 && dinoTop >= 223 && dino.getAttribute('style', 'background-image: url(./asset/kangro.png);')) {
-        //     window.alert('You Lose..')
-        //     block.style.animation = "jump_2 1s infinite";
-        //     block_2.style.animation = "jump_2 3s infinite";
-        //     h1.innerText = 'GAME OVER..';
-        //     btn.style.display = 'inline-block';
-        //     btn.innerText = 'Play again'
-        // }
-        else if (blockLeft_2 < -60 && blockLeft_2 > -100 && dinoTop >= 205 && dino.getAttribute('style', 'background-image:url(./asset/kangro_jump.png);')) {
-            window.alert('You Lose..')
-            block_2.style.animation = "jump_2 1s infinite";
-            block.style.animation = "jump_2 3s infinite";
-            h1.innerText = 'GAME OVER..';
-            btn.style.display = 'inline-block';
-            btn.innerText = 'Play again'
-        }
-        else if (blockLeft_2 < -30 && blockLeft_2 > -100 && dinoTop >= 220 && dino.getAttribute('style', 'background-image: url(./asset/kangro.png);')) {
-            window.alert('You Lose..')
-            block_2.style.animation = "jump_2 1s infinite";
-            block.style.animation = "jump_2 3s infinite";
-            h1.innerText = 'GAME OVER..';
-            btn.style.display = 'inline-block';
-            btn.innerText = 'Play again'
-        }
-    }, 10)
+    }, 10);
 
-    // Play again button
-    btn.addEventListener('click', e => {
-        location.reload(lose)
-    })
+    // ---- Play again button ----
+    btn.addEventListener('click', () => {
+        location.reload();
+    });
 </script>
 
 </html>
