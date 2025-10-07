@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <h1 align="center">CUBE MONSTERS</h1>
+    <h1 align="center">CUBE MONSTERS ()</h1>
     <div id="box">
     <p style="position: relative; top:5px ; left:6px ;">Use spaceBar for Jump </p>
 
@@ -25,7 +25,6 @@
 
     </div>
 </body>
-
 <script>
     const box = document.querySelector('#box')
     const dino = document.querySelector('#dino')
@@ -35,8 +34,23 @@
     const plyer_sound = document.querySelector('audio')
     const btn = document.querySelector('button');
 
+    // Create a score display
+    const scoreDisplay = document.createElement('div');
+    scoreDisplay.style.position = 'absolute';
+    scoreDisplay.style.top = '10px';
+    scoreDisplay.style.right = '20px';
+    scoreDisplay.style.fontSize = '24px';
+    scoreDisplay.style.fontWeight = 'bold';
+    scoreDisplay.innerText = 'Score: 0';
+    document.body.appendChild(scoreDisplay);
+
+    let score = 0;
+    let gameOver = false;
+
     // ---- Function for Jump ----
     function jump() {
+        if (gameOver) return; // Don't allow jumping after losing
+
         h1.innerText = "CUBE MONSTERS";
         btn.style.display = 'none';
         block.style.animation = 'move 2.5s infinite';
@@ -50,6 +64,10 @@
                 dino.classList.remove("animate");
                 dino.style.backgroundImage = "url(./asset/kangro.png)";
             }, 500);
+
+            // Increase score on each successful jump
+            score++;
+            scoreDisplay.innerText = 'Score: ' + score;
         }
     }
 
@@ -71,9 +89,11 @@
 
         if ((blockLeft < 0 && blockLeft > -50 && dinoTop >= 207) ||
             (blockLeft_2 < -60 && blockLeft_2 > -100 && dinoTop >= 205)) {
-            alert('You Lose..');
-            block.style.animation = "jump_2 1s infinite";
-            block_2.style.animation = "jump_2 3s infinite";
+
+            alert(`You Lose.. Final Score: ${score}`);
+            gameOver = true;
+            block.style.animation = "none";
+            block_2.style.animation = "none";
             h1.innerText = 'GAME OVER..';
             btn.style.display = 'inline-block';
             btn.innerText = 'Play again';
@@ -85,5 +105,6 @@
         location.reload();
     });
 </script>
+
 
 </html>
